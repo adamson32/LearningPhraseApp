@@ -1,0 +1,19 @@
+<!-- resources/templates/logout-form-fragment.html -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+
+    <title></title>
+
+</head>
+<body>
+
+<form th:fragment="logout-form" th:action="@{/logout}" method="post" class="logout-form">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <button type="submit">Wyloguj</button>
+</form>
+
+</body>
+</html>
