@@ -1,0 +1,12 @@
+.logout-form {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.logout-form button {
+    margin-left: 5px;
+}

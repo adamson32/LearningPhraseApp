@@ -1,0 +1,24 @@
+
+.confirmationModal {
+    position: fixed;
+    display: none;
+    z-index: 3;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 220px;
+    height: 80px;
+    border: 2px solid #000;
+    background-color: #ffffff;
+    top: 0;
+}
+
+.confirmationModal button {
+    float: left;
+    width: 50px;
+}
+
+.confirmationModal button:nth-of-type(2) {
+    float: right;
+    width: 50px;
+}

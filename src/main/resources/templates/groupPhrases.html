@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearningPhrasesApp</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #963019;
+            text-align: center;
+            margin: 50px;
+            color: wheat;
+        }
+
+        .container {
+            width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            background-color: #160d3d;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .container button {
+            height: 30px;
+            font-size: 16px;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .button-container dt {
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            display: block;
+            margin: 0 auto;
+            width: 300px;
+        }
+
+        .button-container button:nth-of-type(2) {
+            width: 100px;
+        }
+
+    </style>
+    <link rel="stylesheet" type="text/css" href="/logout-button.css">
+    <link rel="stylesheet" type="text/css" href="/confirmation-modal.css">
+    <link rel="stylesheet" type="text/css" href="/addModal.css">
+    <link rel="stylesheet" type="text/css" href="/addButton.css">
+    <link rel="stylesheet" type="text/css" href="/overlay.css">
+</head>
+<body>
+
+
+<h1 style="text-align: center;">EngApp</h1>
+<div th:replace="logout-form-fragment :: logout-form"></div>
+<!--/*@thymesVar id="groupPhrasesName" type="com.example.learningPhrases.group_phrases.dto.GroupPhrasesNameDto>"*/-->
+<div class="overlay" id="overlay"></div>
+<form id="listForm" action="#" th:action="@{/groupPhrases}" th:method="delete">
+
+    <div id="confirmationModal" class="confirmationModal">
+        <p style="color:black;">Czy na pewno chcesz usunąć?</p>
+        <button type="submit" name="confirmDelete" id="confirmDelete">Tak</button>
+        <button type="button" id="cancelDelete">Anuluj</button>
+    </div>
+
+    <div class="container">
+
+        <dl th:each="group,groupStat: ${groupPhrasesName}">
+            <dt>
+                <a style="text-decoration:none;" th:href="@{/groupPhrasesView(group=${group.id})}">
+                    <button id="groupNameButton" th:text="${group.name}" type="button" style="width:300px;"></button>
+
+
+                </a>
+                <button id="deleteBtn" type="button" th:data-value="${group.id}">usun</button>
+
+            </dt>
+
+
+        </dl>
+    </div>
+
+
+</form>
+
+
+<button id="openModal" class="add-button">Create</button>
+
+<!--/*@thymesVar id="groupPhrases" type="com.example.learningPhrases.group_phrases.dto.GroupPhrasesWriteDto"*/-->
+<form id="formAdd" method="post" action="#" th:action="@{/groupPhrases}" th:object="${groupPhrases}"
+      enctype="multipart/form-data">
+    <div id="modal">
+        <div id="modal-content">
+
+            <div id="warningMessage" style="display: none; color: red;">
+                Pole 'name' nie może być puste!
+            </div>
+
+            <input type="text" id="inputName" th:field="*{name}" placeholder="name" th:errorclass="'Bdc(red)'">
+            <textarea id="inputDescription" th:field="*{description}" placeholder="description"></textarea>
+            <input type="file" name="file" id="imageUpload" style="display: none;" accept="image/*">
+            <button type="button" id="addImage">Add Image</button>
+            <img id="imagePreview" src="" alt="Preview" ondblclick="toggleImagePreview()"/>
+
+            <div class="buttons">
+                <button type="reset" id="cancelModal" style="margin-right: auto;">Cancel</button>
+                <button type="submit" id="addGroup" style="margin-left: auto;">Add</button>
+            </div>
+            <div id="successMessage"></div>
+
+
+        </div>
+    </div>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    var groupID;
+    var deleteButtons = document.querySelectorAll('#deleteBtn');
+
+    deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            document.getElementById('confirmationModal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+
+            groupID = button.dataset.value;
+            document.getElementById('confirmDelete').value = groupID;
+        });
+    });
+
+
+</script>
+<script type="text/javascript" src="/javascript/script.js"></script>
+
+</body>
+</html>
