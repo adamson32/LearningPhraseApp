@@ -22,8 +22,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesNameDtoMapper.*;
-import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesNameDtoMapper.mapGroupPhrasesWriteDtoToGroupPhrases;
+import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesDtoMapper.mapGroupPhrasesWriteDtoToGroupPhrases;
 
 @Service
 public class GroupPhrasesService {
@@ -80,7 +79,38 @@ public class GroupPhrasesService {
         }
     }
 
+    public Pair<String, GroupPhrasesReadDto> getImageAndGroupById(int groupID) {
+        GroupPhrasesReadDto group = mapGroupPhrasesWriteDtoToGroupPhrases(groupID,
+                groupPhrasesRepository.findById(groupID).get());
+        if (group != null) {
+            byte[] imageBytes = group.image();
+            if (imageBytes != null) {
+                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                return Pair.of(base64Image, group);
+            } else return Pair.of(null, group);
+
+        }
+        return null;
+    }
+
     public List<GroupPhrases> getGroupPhrasesByUser(User user) {
         return groupPhrasesRepository.findByUser(user);
+    }
+
+    public void updatePost(GroupPhrases groupPhrases) {
+        groupPhrasesRepository.save(groupPhrases);
+    }
+
+    public List<PhrasesReadDTO> readAllById(int id) {
+        Optional<GroupPhrases> groupPhrasesOptional = groupPhrasesRepository.findById(id);
+
+        if (groupPhrasesOptional.isPresent()) {
+            return groupPhrasesOptional
+                    .map(GroupReadModel::new)
+                    .map(GroupReadModel::getPhrases)
+                    .orElseThrow(() -> new EntityNotFoundException("No phrases found for group with id " + id));
+        } else {
+            throw new EntityNotFoundException("Group with id " + id + " not found");
+        }
     }
 }

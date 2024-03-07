@@ -59,16 +59,16 @@
 <body>
 
 
-<h1 style="text-align: center;">EngApp</h1>
+<h1 style="text-align: center; font-family: Arial, sans-serif;">LearningPhraseApp</h1>
 <div th:replace="logout-form-fragment :: logout-form"></div>
 <!--/*@thymesVar id="groupPhrasesName" type="com.example.learningPhrases.group_phrases.dto.GroupPhrasesNameDto>"*/-->
 <div class="overlay" id="overlay"></div>
 <form id="listForm" action="#" th:action="@{/groupPhrases}" th:method="delete">
 
     <div id="confirmationModal" class="confirmationModal">
-        <p style="color:black;">Czy na pewno chcesz usunąć?</p>
-        <button type="submit" name="confirmDelete" id="confirmDelete">Tak</button>
-        <button type="button" id="cancelDelete">Anuluj</button>
+        <p style="color:black;">Are you sure you want to delete?</p>
+        <button type="submit" name="confirmDelete" id="confirmDelete">Yes</button>
+        <button type="button" id="cancelDelete">Cancel</button>
     </div>
 
     <div class="container">
@@ -101,7 +101,7 @@
         <div id="modal-content">
 
             <div id="warningMessage" style="display: none; color: red;">
-                Pole 'name' nie może być puste!
+                The 'name' field must not be empty!
             </div>
 
             <input type="text" id="inputName" th:field="*{name}" placeholder="name" th:errorclass="'Bdc(red)'">

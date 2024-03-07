@@ -19,8 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesNameDtoMapper.mapGroupPhrasesToGroupPhrasesNameDto;
-import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesNameDtoMapper.mapGroupPhrasesToGroupPhrasesWriteDto;
+import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesDtoMapper.mapGroupPhrasesToGroupPhrasesNameDto;
+import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesDtoMapper.mapGroupPhrasesToGroupPhrasesWriteDto;
 
 @Controller
 @RequestMapping("/groupPhrases")

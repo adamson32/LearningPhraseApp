@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroupEnglishPhrasesView</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+
+
+        body {
+            background-color: #963019;
+        }
+
+
+        .container {
+            width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            color: wheat;
+            background-color: #160d3d;
+            padding: 25px;
+            border-radius: 8px;
+
+        }
+
+        .container p {
+            font-size: 18px;
+        }
+
+        .container button {
+            width: 60px;
+            height: 25px;
+            font-size: 15px;
+        }
+
+        .container button:nth-of-type(2) {
+            margin-left: 85px;
+        }
+
+        .container button:nth-of-type(3) {
+            margin-left: 85px;
+        }
+
+        .container button:nth-of-type(4) {
+            margin-left: 85px;
+        }
+
+        .container a {
+            margin-left: 85px;
+        }
+
+        .image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 20px;
+        }
+
+
+    </style>
+    <link rel="stylesheet" type="text/css" href="/logout-button.css">
+    <link rel="stylesheet" type="text/css" href="/confirmation-modal.css">
+    <link rel="stylesheet" type="text/css" href="/addModal.css">
+
+</head>
+<body>
+<div th:replace="logout-form-fragment :: logout-form"></div>
+<!--/*@thymesVar id="groupView" type="com.example.learningPhrases.group_phrases.dto.GroupPhrasesReadDto"*/-->
+<!--/*@thymesVar id="base64Image" type="java.lang.String"*/-->
+<form action="#" th:action="@{/groupPhrasesView}" th:object="${groupView}" th:method="delete">
+    <div id="confirmationModal" class="confirmationModal" style="transform: translate(-50%,300%)">
+        <p>Are you sure you want to delete?</p>
+        <button type="submit" id="confirmDelete" name="confirmDelete" th:value="${groupView.id}">Yes</button>
+        <button type="button" id="cancelDelete">Cancel</button>
+    </div>
+
+
+    <div class="container">
+
+        <h1 th:text="${groupView.name}"></h1>
+        <p th:text="${groupView.description}"></p>
+        <img th:src="'data:image/png;base64,' + ${base64Image}" alt="" class="image">
+
+        <button>add</button>
+        <button type="button" id="openModal">modify</button>
+        <button type="button" id="deleteBtn">delete</button>
+        <a th:href="@{/phrases(group=${groupView.id})}">
+            <button type="button">browse</button>
+        </a>
+
+        <a th:href="@{/startPhrases(group=${groupView.id})}" style="text-decoration: none;">
+            <button type="button">start</button>
+        </a>
+
+    </div>
+
+</form>
+
+<form id="formAdd" th:method="put" action="#" th:action="@{'/groupPhrasesView/' + ${groupView.id}}"
+      th:object="${groupView}"
+      enctype="multipart/form-data">
+    <div id="modal">
+        <div id="modal-content">
+
+            <div id="warningMessage" style="display: none; color: red;">
+                The 'name' field must not be empty!
+            </div>
+
+            <input type="text" id="inputName" th:field="*{name}" placeholder="name" th:errorclass="'Bdc(red)'">
+            <textarea id="input2" th:field="*{description}" placeholder="description"></textarea>
+            <input type="file" name="file" id="imageUpload" style="display: none;" accept="image/*">
+            <button type="button" id="addImage">Add Image</button>
+            <img id="imagePreview" src="" alt="Preview" ondblclick="toggleImagePreview()"/>
+
+            <div class="buttons">
+                <button type="reset" id="cancelModal" style="margin-right: auto;">Cancel</button>
+                <button type="submit" id="addGroup" style="margin-left: auto;">Add</button>
+            </div>
+            <div id="successMessage"></div>
+
+
+        </div>
+    </div>
+</form>
+
+<script>
+    document.getElementById('deleteBtn').addEventListener('click', function () {
+        document.getElementById('confirmationModal').style.display = 'block';
+    });
+
+    document.getElementById('cancelDelete').addEventListener('click', function () {
+        document.getElementById('confirmationModal').style.display = 'none';
+    });
+
+
+</script>
+
+<script type="text/javascript" src="javascript/script.js"></script>
+
+</body>
+</html>
