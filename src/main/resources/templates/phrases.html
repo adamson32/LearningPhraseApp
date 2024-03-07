@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Phrases</title>
+    <style>
+
+        .container {
+            margin-top: 50px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: 20px
+        }
+
+        .container table {
+            width: 100%;
+            border-collapse: collapse;
+
+        }
+
+        th, td {
+        --> <!-- word-wrap: break-word;
+        --> <!--
+        }
+
+        .container td {
+            width: 19%;
+            border: 1px solid black;
+        }
+
+        .container td:nth-of-type(2) {
+            width: 35%;
+
+        }
+
+        .container td:nth-of-type(3) {
+            width: 19%;
+        }
+
+        .container td:nth-of-type(4) {
+            width: 17%;
+        }
+
+        .container td:nth-of-type(5) {
+            width: 5%;
+            font-size: 25px;
+        }
+
+        .container td:nth-of-type(6) {
+            width: 5%;
+            font-size: 25px;
+        }
+
+        .container th {
+            background-color: #99ff00;
+            border: 1px solid black;
+        }
+
+        .BD {
+            border: solid 1px black;
+        }
+
+        .C\(red\) {
+            color: red;
+        }
+
+        .uniqueMessage button {
+            width: 55px;
+            height: 35px;
+            font-size: 17px;
+        }
+
+
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="/addButton.css">
+    <link rel="stylesheet" type="text/css" href="/phrase-modal.css">
+    <link rel="stylesheet" type="text/css" href="/overlay.css">
+    <link rel="stylesheet" type="text/css" href="/logout-button.css">
+
+</head>
+<body>
+
+
+<div th:replace="logout-form-fragment :: logout-form"></div>
+
+<div id="overlay" class="overlay"></div>
+<div id="phraseModal" class="phrase-modal">
+    <form id="formPhraseModal" action="#" th:action="@{/phrases}" method="post" th:object="${phrase}">
+        <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
+        <input id="phrase" type="text" th:field="*{phrase}" placeholder="phrase" maxlength="250">
+        <input id="description" type="text" th:field="*{description}" placeholder="description" maxlength="1000">
+        <input id="meaning" type="text" th:field="*{meaning}" placeholder="meaning" maxlength="250">
+        <button id="cancelPhraseModal" type="reset">cancel</button>
+        <button id="submitBtn" type="submit">add</button>
+    </form>
+</div>
+
+<form action="#" th:method="delete" th:action="@{/phrases}">
+    <div class="container">
+        <p th:if="${#lists.isEmpty(phrases)}">No phrases available</p>
+
+        <table th:if="${not #lists.isEmpty(phrases)}">
+            <thead>
+            <tr>
+                <th>phrase</th>
+                <th>description</th>
+                <th>meaning</th>
+                <th>nextDate</th>
+                <th>delete</th>
+                <th>modify</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="phrase : ${phrases}">
+                <td>
+                    <span th:if="${#strings.length(phrase.phrase) > 28}"
+                          th:text="${#strings.substring(phrase.phrase, 0, 28)} + '...'"
+                          th:title="${phrase.phrase}"></span>
+                    <span th:unless="${#strings.length(phrase.phrase) > 28}" th:text="${phrase.phrase}"></span>
+
+                </td>
+                <td>
+                   <span th:if="${#strings.length(phrase.description) > 50}"
+                         th:text="${#strings.substring(phrase.description, 0, 50)} + '...'"
+                         th:title="${phrase.description}"></span>
+                    <span th:unless="${#strings.length(phrase.description) > 50}"
+                          th:text="${phrase.description}"></span>
+                </td>
+                <td>
+                    <span th:if="${#strings.length(phrase.meaning) > 28}"
+                          th:text="${#strings.substring(phrase.meaning, 0, 28)} + '...'"
+                          th:title="${phrase.meaning}"></span>
+                    <span th:unless="${#strings.length(phrase.meaning) > 28}" th:text="${phrase.meaning}"></span>
+                </td>
+                <td><span th:text="${phrase.nextDate}">nextDate</span></td>
+                <td>
+                    <button id="deleteBtn" type="submit" name="confirmDelete" th:value="${phrase.id}">
+                        <span>&#x1F5D1;</span>
+                    </button>
+                </td>
+                <td>
+                    <button id="updateBtn" type="button" th:data-value="${phrase.id}" th:data-phrase="${phrase.phrase}"
+                            th:data-description="${phrase.description}" th:data-meaning="${phrase.meaning}">
+                        <span>&#10227;</span>
+                    </button>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button id="addButton" type="button" class="add-button">
+            add
+        </button>
+    </div>
+
+</form>
+
+
+<script>
+
+    var phraseInputTemp = "";
+
+
+    document.getElementById('addButton').addEventListener('click', function () {
+        document.getElementById('phraseModal').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block'
+    });
+
+
+    document.getElementById('cancelPhraseModal').addEventListener('click', function () {
+        document.getElementById('phraseModal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none'
+        document.getElementById('submitBtn').value = null;
+        document.getElementById('submitBtn').name = '';
+        document.getElementById('phrase').style.borderColor = '';
+        document.getElementById('meaning').style.borderColor = '';
+        phraseInputTemp = "";
+        var methodInput = document.getElementById('methodInputId');
+        if (methodInput.parentNode) {
+            methodInput.parentNode.removeChild(methodInput);
+        }
+
+    });
+
+    var updateButtons = document.querySelectorAll('#updateBtn');
+
+    updateButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            document.getElementById('phraseModal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            phraseInputTemp = button.dataset.phrase;
+            console.log(phraseInputTemp);
+
+
+            var phraseId = button.dataset.value;
+            document.getElementById('submitBtn').value = phraseId;
+            document.getElementById('submitBtn').name = 'updatePhrase';
+
+
+            document.getElementById('phrase').value = button.dataset.phrase;
+            if (button.dataset.description == null) {
+                document.getElementById('description').value = "";
+            } else document.getElementById('description').value = button.dataset.description;
+
+            document.getElementById('meaning').value = button.dataset.meaning;
+
+
+            var form = document.getElementById('formPhraseModal');
+
+            var methodInput = form.querySelector('input[name="_method"]');
+
+            if (!methodInput) {
+                methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.id = 'methodInputId';
+                form.appendChild(methodInput);
+            }
+
+            methodInput.value = 'put';
+
+        });
+    });
+
+
+</script>
+<script type="text/javascript" src="/javascript/phraseModal.js"></script>
+</body>
+</html>
