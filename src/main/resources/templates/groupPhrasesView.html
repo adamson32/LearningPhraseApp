@@ -68,7 +68,6 @@
 </head>
 <body>
 <div th:replace="logout-form-fragment :: logout-form"></div>
-<!--/*@thymesVar id="groupView" type="com.example.learningPhrases.group_phrases.dto.GroupPhrasesReadDto"*/-->
 <!--/*@thymesVar id="base64Image" type="java.lang.String"*/-->
 <form action="#" th:action="@{/groupPhrasesView}" th:object="${groupView}" th:method="delete">
     <div id="confirmationModal" class="confirmationModal" style="transform: translate(-50%,300%)">

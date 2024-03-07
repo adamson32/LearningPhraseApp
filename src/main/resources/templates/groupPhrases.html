@@ -61,7 +61,6 @@
 
 <h1 style="text-align: center; font-family: Arial, sans-serif;">LearningPhraseApp</h1>
 <div th:replace="logout-form-fragment :: logout-form"></div>
-<!--/*@thymesVar id="groupPhrasesName" type="com.example.learningPhrases.group_phrases.dto.GroupPhrasesNameDto>"*/-->
 <div class="overlay" id="overlay"></div>
 <form id="listForm" action="#" th:action="@{/groupPhrases}" th:method="delete">
 
@@ -94,7 +93,6 @@
 
 <button id="openModal" class="add-button">Create</button>
 
-<!--/*@thymesVar id="groupPhrases" type="com.example.learningPhrases.group_phrases.dto.GroupPhrasesWriteDto"*/-->
 <form id="formAdd" method="post" action="#" th:action="@{/groupPhrases}" th:object="${groupPhrases}"
       enctype="multipart/form-data">
     <div id="modal">
