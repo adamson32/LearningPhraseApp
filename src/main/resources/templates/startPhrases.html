@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>startPhrases</title>
+    <style>
+        .start-container {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  text-align: center;
+}
+
+.start-container label {
+  display: block;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.start-container label:nth-of-type(1) {
+  height: 18vh;
+  border: 2px solid #0000ff;
+}
+
+.start-container label:nth-of-type(2) {
+  height: 50vh;
+  border: 2px solid #ccc
+}
+
+.start-container label:nth-of-type(3) {
+  height: 8vh;
+  border: 2px solid #00ff00;
+}
+
+.start-container button {
+  display: block;
+  width: 150px;
+  height: 40px;
+  margin: 20px auto;
+  background-color: lightgrey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ .end-screen{
+    display: none;
+    position: fixed;
+    z-index: 4;
+   font-size: 58px;
+   width: 400px;
+   color: #77ff00;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+ }
+
+.end-screen button{
+  width: 100px;
+  height: 40px;
+  font-size: 24px;
+}
+
+
+.check-button{
+    display: block;
+    position: fixed;
+    bottom: 0;
+    width: 150px;
+    height: 40px;
+    margin: 20px auto;
+    background-color: lightgrey;
+    left:50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+}
+ .phrases-bottom-buttons {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    padding: 10px;
+}
+
+.phrases-bottom-buttons button {
+    width: 80px;
+    height: 30px;
+    font-size: 18px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+        #finishBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 70px;
+            height: 30px;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<ul id="hiddenData" style="display: none;">
+    <li th:each="phrase : ${phrasesByNextDate}" th:data-id="${phrase.id}" th:data-phrase="${phrase.phrase}" th:data-description="${phrase.description}"
+        th:data-meaning="${phrase.meaning}" th:data-progress="${phrase.progress}"></li>
+</ul>
+
+
+
+<form id="phrasesForm" action="#" th:action="@{/startPhrases}" th:method="put">
+    <div id="bottomBtn" class="phrases-bottom-buttons">
+        <button type="button" id="againBtn">again</button>
+        <button type="button" id="dayBtn" onclick="addDataToListPhrasesIdAndPlusDays(0);  updateQueueDisplay()">day</button>
+
+        <button type="button" id="option2" onclick="addDataToListPhrasesIdAndPlusDays(1); updateQueueDisplay()">
+            [[${phrasesByNextDate[0].progress}]] [[${phrasesByNextDate[0].progress eq 1 ? 'day' : 'days'}]]
+        </button>
+
+        <button type="button" id="option3" onclick="addDataToListPhrasesIdAndPlusDays(2); updateQueueDisplay()"
+                > [[${phrasesByNextDate[0].progress * 2}]] days</button>
+        <button type="button" id="option4" onclick="addDataToListPhrasesIdAndPlusDays(3); updateQueueDisplay()">
+        [[${phrasesByNextDate[0].progress * 3}]] days </button>
+    </div>
+
+    <div id="listIdAndPlusDays">
+
+
+    </div>
+    <button style="display: none;" id="finishBtn" type="submit">finish</button>
+    <div id="endScreen" class="end-screen">
+        <span>Congratulation</span>
+        <button id="endScreenBtn" type="submit">finish</button>
+    </div>
+</form>
+
+
+<div class="start-container">
+
+    <label id="phraseLabel" th:text="${phrasesByNextDate[0].phrase}">
+
+   </label>
+    <label id="descriptionLabel" th:text="${phrasesByNextDate[0].description}" style="display: none;"></label>
+    <label id="meaningLabel" th:text="${phrasesByNextDate[0].meaning}" style="display: none;"></label>
+
+</div>
+        <button id="check" class="check-button" type="button"> Check</button>
+<script  type="text/javascript" src="javascript/queue.js"></script>
+<script>
+
+    let isShowAlert=true;
+    finishButton.addEventListener('click',function (){
+        isShowAlert=false;
+    });
+
+
+    document.getElementById('endScreenBtn').addEventListener('click',function (){
+        isShowAlert=false;
+    });
+
+
+        function addDataToListPhrasesIdAndPlusDays(value){
+            var listIdAndPlusDays = document.getElementById("listIdAndPlusDays");
+            var newIdInput = document.createElement("input");
+            newIdInput.type = 'hidden';
+            newIdInput.setAttribute("name", "phraseId");
+            newIdInput.name = 'phraseId';
+            newIdInput.value = phrasesQueue.front().phraseId;
+            listIdAndPlusDays.appendChild(newIdInput);
+
+            var newPlusDaysInput = document.createElement("input");
+            newPlusDaysInput.type = 'hidden';
+            newPlusDaysInput.setAttribute("name","plusDays");
+            listIdAndPlusDays.appendChild(newPlusDaysInput);
+
+            if(value == 0){
+                 newPlusDaysInput.value = '0';
+            }else{
+                 newPlusDaysInput.value = phrasesQueue.front().progress * value;
+            }
+
+        }
+
+
+        window.addEventListener('beforeunload', function(event) {
+            if(isShowAlert){
+                var listIdAndPlusDays = document.getElementById('listIdAndPlusDays');
+                var phraseIdExists = listIdAndPlusDays.querySelector('input[name="phraseId"]') !== null;
+                var plusDaysExists = listIdAndPlusDays.querySelector('input[name="plusDays"]') !== null;
+                if (phraseIdExists && plusDaysExists) {
+                }
+
+
+                event.preventDefault();
+                event.returnValue = 'You have unsaved changes. Are you sure you want to leave the page?';
+            }
+
+        });
+</script>
+
+</body>
+</html>

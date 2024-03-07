@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class GroupReadModel {
     List<PhrasesReadDTO> phrasesReadDto;
     public GroupReadModel(GroupPhrases source) {
-        phrasesReadDto = source.getEnglishPhrases().stream()
+        phrasesReadDto = source.getPhrases().stream()
                 .map(PhrasesReadDTO::new)
                 .collect(Collectors.toList());
     }
@@ -18,8 +18,8 @@ public class GroupReadModel {
         return phrasesReadDto;
     }
 
-    public void setPhrases(List<PhrasesReadDTO> englishPhrases) {
-        this.phrasesReadDto = englishPhrases;
+    public void setPhrases(List<PhrasesReadDTO> phrases) {
+        this.phrasesReadDto = phrases;
     }
 
 }

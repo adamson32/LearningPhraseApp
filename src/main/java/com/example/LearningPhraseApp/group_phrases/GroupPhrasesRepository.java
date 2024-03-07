@@ -11,13 +11,13 @@ import java.util.List;
 @Repository
 public interface GroupPhrasesRepository extends JpaRepository<GroupPhrases, Integer> {
     @Modifying
-    @Query(nativeQuery = true, value = "UPDATE group_english_phrases " +
+    @Query(nativeQuery = true, value = "UPDATE group_phrases " +
             "SET next_date = (" +
             "    SELECT MIN(ep.next_date) " +
-            "    FROM english_phrases ep " +
-            "    WHERE ep.group_eng_phrs_id = group_english_phrases.id " +
+            "    FROM phrases ep " +
+            "    WHERE ep.group_eng_phrs_id = group_phrases.id " +
             ")")
-    void updateGroupEnglishPhrasesByNextDate();// nulle były w bazie
+    void updateGroupPhrasesByNextDate();
 
 
     @Query(value = "SELECT gp FROM GroupPhrases gp")

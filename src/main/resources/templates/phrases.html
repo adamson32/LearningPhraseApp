@@ -79,6 +79,8 @@
     <link rel="stylesheet" type="text/css" href="/phrase-modal.css">
     <link rel="stylesheet" type="text/css" href="/overlay.css">
     <link rel="stylesheet" type="text/css" href="/logout-button.css">
+    <link rel="stylesheet" type="text/css" href="/back-button.css">
+
 
 </head>
 <body>
@@ -159,6 +161,12 @@
     </div>
 
 </form>
+<a id="aBackBtn">
+    <button type="button" id="backBtn" class="back-button">
+        <span>&larr;</span> Back
+    </button>
+</a>
+
 
 
 <script>
@@ -226,6 +234,22 @@
 
         });
     });
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentGroup = urlParams.get('group');
+
+        const dynamicLink = `http://localhost:8080/groupPhrasesView?group=${currentGroup}`;
+        var aBackBtn = document.getElementById('aBackBtn');
+        aBackBtn.href = dynamicLink;
+        //document.getElementById('aBackBtn').href(dynamicLink);
+
+
+    document.getElementById('backBtn').addEventListener('click', function () {
+    });
+
+
+
 
 
 </script>

@@ -33,7 +33,7 @@ public class GroupPhrases {
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
-    private List<Phrases> englishPhrases;
+    private List<Phrases> phrases;
 
 
     @ManyToOne

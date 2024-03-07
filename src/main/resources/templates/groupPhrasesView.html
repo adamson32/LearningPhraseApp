@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GroupEnglishPhrasesView</title>
+    <title>GroupPhrasesView</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style>
@@ -64,6 +64,7 @@
     <link rel="stylesheet" type="text/css" href="/logout-button.css">
     <link rel="stylesheet" type="text/css" href="/confirmation-modal.css">
     <link rel="stylesheet" type="text/css" href="/addModal.css">
+    <link rel="stylesheet" type="text/css" href="/back-button.css">
 
 </head>
 <body>
@@ -86,7 +87,7 @@
         <button>add</button>
         <button type="button" id="openModal">modify</button>
         <button type="button" id="deleteBtn">delete</button>
-        <a th:href="@{/phrases(group=${groupView.id})}">
+        <a style="text-decoration: none;" th:href="@{/phrases(group=${groupView.id})}">
             <button type="button">browse</button>
         </a>
 
@@ -95,6 +96,8 @@
         </a>
 
     </div>
+
+
 
 </form>
 
@@ -124,6 +127,12 @@
         </div>
     </div>
 </form>
+<a style="text-decoration: none;" href="/groupPhrases">
+    <button class="back-button">
+        <span>&larr;</span> Back
+    </button>
+</a>
+
 
 <script>
     document.getElementById('deleteBtn').addEventListener('click', function () {
