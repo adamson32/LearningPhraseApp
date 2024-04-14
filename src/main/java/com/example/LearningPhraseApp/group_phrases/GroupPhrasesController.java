@@ -1,7 +1,10 @@
 package com.example.LearningPhraseApp.group_phrases;
 
+import com.example.LearningPhraseApp.cloudinary.CloudinaryService;
 import com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesNameDto;
 import com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesWriteDto;
+import com.example.LearningPhraseApp.image.ImageProcessingService;
+import com.example.LearningPhraseApp.image.ImageValidationService;
 import com.example.LearningPhraseApp.users.User;
 import com.example.LearningPhraseApp.users.UserRepository;
 import jakarta.validation.Valid;
@@ -27,15 +30,22 @@ import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesDtoMap
 public class GroupPhrasesController {
 
     private final GroupPhrasesRepository groupPhrasesRepository;
-    private final GroupPhrasesService groupPhrasesService;
     private final UserRepository userRepository;
+    private final CloudinaryService cloudinaryService;
+    private final ImageProcessingService imageProcessingService;
+    private final ImageValidationService imageValidationService;
     Logger logger = LoggerFactory.getLogger(GroupPhrasesController.class);
 
 
-    public GroupPhrasesController(GroupPhrasesRepository groupPhrasesRepository, GroupPhrasesService groupPhrasesService, UserRepository userRepository) {
+    public GroupPhrasesController(GroupPhrasesRepository groupPhrasesRepository,
+                                  UserRepository userRepository, CloudinaryService cloudinaryService,
+                                  ImageProcessingService imageProcessingService,
+                                  ImageValidationService imageValidationService) {
         this.groupPhrasesRepository = groupPhrasesRepository;
-        this.groupPhrasesService = groupPhrasesService;
         this.userRepository = userRepository;
+        this.cloudinaryService = cloudinaryService;
+        this.imageProcessingService = imageProcessingService;
+        this.imageValidationService = imageValidationService;
     }
 
     @GetMapping()
@@ -48,13 +58,12 @@ public class GroupPhrasesController {
     List<GroupPhrasesNameDto> getGroups(Authentication authentication) {
         Optional<User> user = userRepository.findByEmail(authentication.getName());
         if (user.isPresent()) {
-            return mapGroupPhrasesToGroupPhrasesNameDto(groupPhrasesService.getGroupPhrasesByUser(user.get()));
+            return mapGroupPhrasesToGroupPhrasesNameDto(groupPhrasesRepository.findByUser(user.get()));
         } else {
             logger.error("User not found");
             return Collections.emptyList();
         }
     }
-
 
 
     @PostMapping
@@ -68,31 +77,37 @@ public class GroupPhrasesController {
             for (FieldError error : errors) {
                 String fieldName = error.getField();
                 String errorMessage = error.getDefaultMessage();
-                System.out.println(fieldName + errorMessage);
-
+                logger.error("{}: {}", fieldName, errorMessage);
             }
-            return "groupPhrases";
+            return "redirect:/somethingWentWrong";
         }
+
         Optional<User> user = userRepository.findByEmail(authentication.getName());
 
         if (!file.isEmpty()) {
-            groupPhrasesService.setImageFileAndSave(current, file);
-            groupPhrasesRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null,user.get(),current));
+            if (!imageValidationService.isValidImage(file)) {
+                return "redirect:/somethingWentWrong";
+            }
+
+            byte[] adjustedImage = imageProcessingService.adjustImage(file, 700, 500,"png");
+            String imageUrl = cloudinaryService.uploadImage(adjustedImage);
+            current.setImageUrl(imageUrl);
+            groupPhrasesRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null, user.get(), current));
         } else {
-            groupPhrasesRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null,user.get(),current));
+            groupPhrasesRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null, user.get(), current));
         }
         return "redirect:/groupPhrases";
     }
 
 
-
     @DeleteMapping(params = "confirmDelete")
-    String deleteGroup(@ModelAttribute("groupPhrasesName") GroupPhrasesNameDto current,
-                       @RequestParam("confirmDelete") int index,
-                       Model model) {
-        groupPhrasesRepository.deleteById(index);
-        model.addAttribute("groupPhrases", new GroupPhrases());
-
+    String deleteGroup(@RequestParam("confirmDelete") int groupId) {
+        Optional<GroupPhrases> groupPhrasesOptional = groupPhrasesRepository.findById(groupId);
+        if (groupPhrasesOptional.get().getImageUrl() != null) {
+            String previousImageUrl = groupPhrasesOptional.get().getImageUrl();
+            cloudinaryService.deleteImage(previousImageUrl);
+        }
+        groupPhrasesRepository.deleteById(groupId);
         return "redirect:/groupPhrases";
     }
 

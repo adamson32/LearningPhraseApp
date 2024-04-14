@@ -82,8 +82,8 @@
 
         <h1 th:text="${groupView.name}"></h1>
         <p th:text="${groupView.description}"></p>
-        <img th:src="'data:image/png;base64,' + ${base64Image}" alt="" class="image">
-
+<!--        <img th:src="'data:image/png;base64,' + ${base64Image}" alt="" class="image">-->
+        <img th:src="${groupView.imageUrl()}" alt="">
         <button>add</button>
         <button type="button" id="openModal">modify</button>
         <button type="button" id="deleteBtn">delete</button>

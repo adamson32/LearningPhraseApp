@@ -25,16 +25,11 @@ public class GroupPhrases {
 
     private String name;
     private String description;
-
-    @Lob
-    private byte[] image;
-
+    private String imageUrl;
     private LocalDateTime nextDate;
-
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
     private List<Phrases> phrases;
-
 
     @ManyToOne
     @JoinColumn(name = "user_id")

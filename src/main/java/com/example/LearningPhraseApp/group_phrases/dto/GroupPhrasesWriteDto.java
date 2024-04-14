@@ -18,8 +18,7 @@ public class GroupPhrasesWriteDto {
     private String name;
     @Length(max = 1000)
     private String description;
-    @Lob
-    private byte[] image;
+    private String imageUrl;
     private User user;
 
 

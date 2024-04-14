@@ -7,7 +7,7 @@ public record GroupPhrasesReadDto(
         int id,
         String name,
         String description,
-        byte[] image
+        String imageUrl
 ) {
 
 }

@@ -23,7 +23,7 @@ public class GroupPhrasesDtoMapper {
             return GroupPhrases.builder()
                     .name(group.getName())
                     .description(group.getDescription())
-                    .image(group.getImage())
+                    .imageUrl(group.getImageUrl())
                     .user(user)
                     .build();
         } else {
@@ -31,7 +31,7 @@ public class GroupPhrasesDtoMapper {
                     .id(id)
                     .name(group.getName())
                     .description(group.getDescription())
-                    .image(group.getImage())
+                    .imageUrl(group.getImageUrl())
                     .user(user)
                     .build();
         }
@@ -43,7 +43,7 @@ public class GroupPhrasesDtoMapper {
                 .id(id)
                 .name(group.getName())
                 .description(group.getDescription())
-                .image(group.getImage())
+                .imageUrl(group.getImageUrl())
                 .build();
     }
 

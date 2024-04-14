@@ -3,7 +3,7 @@ CREATE TABLE users (
                        id int PRIMARY KEY IDENTITY(1,1),
                        username NVARCHAR(50) UNIQUE NOT NULL,
                        password NVARCHAR(255) NOT NULL,
-                       email NVARCHAR(100) UNIQUE NOT NULL,
+                       email NVARCHAR(255) UNIQUE NOT NULL,
                        enabled bit
 );
 
