@@ -1,8 +1,6 @@
 package com.example.LearningPhraseApp.registration;
 
-import com.example.LearningPhraseApp.users.User;
-import com.example.LearningPhraseApp.users.UserRegistrationDto;
-import com.example.LearningPhraseApp.users.UserService;
+import com.example.LearningPhraseApp.users.*;
 import com.example.LearningPhraseApp.verificationToken.VerificationToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/registration")
@@ -26,16 +23,18 @@ public class RegistrationController {
     private final ApplicationEventPublisher eventPublisher;
     private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
+    private final VerificationTokenService verificationTokenService;
 
-    public RegistrationController(ApplicationEventPublisher eventPublisher, UserService userService) {
+    public RegistrationController(ApplicationEventPublisher eventPublisher, UserService userService,
+                                  VerificationTokenService verificationTokenService) {
         this.eventPublisher = eventPublisher;
         this.userService = userService;
+        this.verificationTokenService = verificationTokenService;
     }
 
     @GetMapping
-    String show(Model model,Locale locale){
+    String show(Model model){
         model.addAttribute("user", new UserRegistrationDto());
-        System.out.println(locale.getCountry());
         return "registration";
     }
 
@@ -68,7 +67,7 @@ public ModelAndView registerUserAccount(
             (@RequestParam("token") String token
              ) {
 
-        VerificationToken verificationToken = userService.getVerificationToken(token);
+        VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
         if (verificationToken == null) {
             return new ModelAndView("redirect:/badUser");
 

@@ -2,7 +2,8 @@ package com.example.LearningPhraseApp.registration;
 
 import com.example.LearningPhraseApp.users.User;
 import com.example.LearningPhraseApp.users.UserRepository;
-import com.example.LearningPhraseApp.users.UserService;
+import com.example.LearningPhraseApp.users.UserServiceImpl;
+import com.example.LearningPhraseApp.users.VerificationTokenService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,10 +16,12 @@ import java.util.UUID;
 public class RegistrationListener implements
         ApplicationListener<OnRegistrationCompleteEvent> {
 
-    public RegistrationListener(UserService userService, MessageSource messages, UserRepository userRepository,
+    private final VerificationTokenService verificationTokenService;
+    private final JavaMailSender mailSender;
+
+    public RegistrationListener(VerificationTokenService verificationTokenService,
                                 JavaMailSender mailSender) {
-        this.userService = userService;
-        this.userRepository = userRepository;
+        this.verificationTokenService = verificationTokenService;
         this.mailSender = mailSender;
     }
 
@@ -26,11 +29,6 @@ public class RegistrationListener implements
     public boolean supportsAsyncExecution() {
         return ApplicationListener.super.supportsAsyncExecution();
     }
-
-    private final UserService userService;
-    private final UserRepository userRepository;
-
-    private final JavaMailSender mailSender;
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
@@ -40,7 +38,7 @@ public class RegistrationListener implements
     private void confirmRegistration(OnRegistrationCompleteEvent event) {
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
-        userService.createVerificationToken(user, token);
+        verificationTokenService.createVerificationToken(user, token);
 
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";

@@ -24,7 +24,6 @@ public class Phrases {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(unique = true)
     private String phrase;
     private String description;
     private String meaning;
