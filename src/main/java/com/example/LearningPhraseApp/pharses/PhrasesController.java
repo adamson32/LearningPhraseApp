@@ -1,9 +1,9 @@
 package com.example.LearningPhraseApp.pharses;
 
-import com.example.LearningPhraseApp.group_phrases.GroupPhrasesService;
+import com.example.LearningPhraseApp.group.PhraseGroupService;
 import com.example.LearningPhraseApp.pharses.dto.PhrasesReadDTO;
 import com.example.LearningPhraseApp.pharses.dto.PhrasesWriteDTO;
-import com.example.LearningPhraseApp.verification.GroupPhrasesMembershipService;
+import com.example.LearningPhraseApp.verification.PhraseGroupMembershipService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,23 +21,23 @@ import java.util.List;
 @RequestMapping("/phrases")
 public class PhrasesController {
     private final PhrasesRepository repository;
-    private final GroupPhrasesService groupPhrasesService;
-    private final GroupPhrasesMembershipService groupPhrasesMembershipService;
+    private final PhraseGroupService phraseGroupService;
+    private final PhraseGroupMembershipService phraseGroupMembershipService;
     private final PhrasesService phrasesService;
     private int storedGroupId;
     private static final Logger logger = LoggerFactory.getLogger(PhrasesController.class);
 
-    public PhrasesController(PhrasesRepository repository, GroupPhrasesService groupPhrasesService, GroupPhrasesMembershipService groupPhrasesMembershipService, PhrasesService phrasesService) {
+    public PhrasesController(PhrasesRepository repository, PhraseGroupService phraseGroupService, PhraseGroupMembershipService phraseGroupMembershipService, PhrasesService phrasesService) {
         this.repository = repository;
-        this.groupPhrasesService = groupPhrasesService;
-        this.groupPhrasesMembershipService = groupPhrasesMembershipService;
+        this.phraseGroupService = phraseGroupService;
+        this.phraseGroupMembershipService = phraseGroupMembershipService;
         this.phrasesService = phrasesService;
     }
 
     @GetMapping
     String showTemplate(@RequestParam("group") int groupID,
                         Model model, Authentication authentication) {
-        if (groupPhrasesMembershipService.isCurrentGroupPhrasesBelongsToUser(authentication, groupID)) {
+        if (phraseGroupMembershipService.isCurrentGroupPhrasesBelongsToUser(authentication, groupID)) {
             storedGroupId = groupID;
             model.addAttribute("phrases", getPhrases(groupID));
             model.addAttribute("phrase", new PhrasesWriteDTO());
@@ -49,7 +49,7 @@ public class PhrasesController {
     }
 
     private List<PhrasesReadDTO> getPhrases(int groupID) {
-        return groupPhrasesService.readAllPhrasesFromGroupById(groupID);
+        return phraseGroupService.readAllPhrasesFromGroupById(groupID);
     }
 
     @DeleteMapping(params = "confirmDelete")

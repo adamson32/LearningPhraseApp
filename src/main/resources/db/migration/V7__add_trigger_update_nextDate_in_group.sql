@@ -3,12 +3,12 @@ ON phrases
 AFTER INSERT, UPDATE
 AS
 BEGIN
-    UPDATE group_phrases
+    UPDATE phrase_group
     SET next_date = (
         SELECT MIN(next_date)
         FROM phrases
-        WHERE group_phrases_id = inserted.group_phrases_id
+        WHERE phrase_group_id = inserted.phrase_group_id
     )
-    FROM group_phrases
-    INNER JOIN inserted ON group_phrases.id = inserted.group_phrases_id;
+    FROM phrase_group
+    INNER JOIN inserted ON phrase_group.id = inserted.phrase_group_id;
 END;

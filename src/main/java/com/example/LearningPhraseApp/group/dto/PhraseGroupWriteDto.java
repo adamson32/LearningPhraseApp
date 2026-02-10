@@ -1,7 +1,6 @@
-package com.example.LearningPhraseApp.group_phrases.dto;
+package com.example.LearningPhraseApp.group.dto;
 
 import com.example.LearningPhraseApp.users.User;
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -12,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 @Getter
 @Setter
-public class GroupPhrasesWriteDto {
+public class PhraseGroupWriteDto {
     @NotBlank(message = "name must be not null")
     @Length(max = 100)
     private String name;

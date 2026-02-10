@@ -1,6 +1,6 @@
 package com.example.LearningPhraseApp.pharses;
 
-import com.example.LearningPhraseApp.group_phrases.GroupPhrases;
+import com.example.LearningPhraseApp.group.PhraseGroup;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,11 +32,11 @@ public class Phrases {
     private LocalDateTime nextDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_phrases_id")
-    private GroupPhrases group;
+    @JoinColumn(name = "phrase_group_id")
+    private PhraseGroup group;
 
     public Phrases(String phrase, String description,
-                   String polishMeaning, LocalDateTime nextDate, GroupPhrases group) {
+                   String polishMeaning, LocalDateTime nextDate, PhraseGroup group) {
         this.phrase = phrase;
         this.description = description;
         this.meaning = polishMeaning;

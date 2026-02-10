@@ -1,6 +1,6 @@
-package com.example.LearningPhraseApp.group_phrases.dto;
+package com.example.LearningPhraseApp.group.dto;
 
-import com.example.LearningPhraseApp.group_phrases.GroupPhrases;
+import com.example.LearningPhraseApp.group.PhraseGroup;
 import com.example.LearningPhraseApp.pharses.dto.PhrasesReadDTO;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class GroupReadModel {
     List<PhrasesReadDTO> phrasesReadDto;
-    public GroupReadModel(GroupPhrases source) {
+    public GroupReadModel(PhraseGroup source) {
         phrasesReadDto = source.getPhrases().stream()
                 .map(PhrasesReadDTO::new)
                 .collect(Collectors.toList());

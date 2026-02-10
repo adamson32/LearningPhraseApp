@@ -1,4 +1,4 @@
-package com.example.LearningPhraseApp.group_phrases;
+package com.example.LearningPhraseApp.group;
 
 import com.example.LearningPhraseApp.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GroupPhrasesRepository extends JpaRepository<GroupPhrases, Integer> {
+public interface PhraseGroupRepository extends JpaRepository<PhraseGroup, Integer> {
 
-    List<GroupPhrases> findByUser(User user);
+    List<PhraseGroup> findByUser(User user);
 
 }

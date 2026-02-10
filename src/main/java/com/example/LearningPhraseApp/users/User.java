@@ -1,7 +1,7 @@
 package com.example.LearningPhraseApp.users;
 
 
-import com.example.LearningPhraseApp.group_phrases.GroupPhrases;
+import com.example.LearningPhraseApp.group.PhraseGroup;
 import com.example.LearningPhraseApp.roles.Role;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -38,12 +38,13 @@ public class User {
     private Set<Role> roles = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 
-    private List<GroupPhrases> groupPhrases;
+    private List<PhraseGroup> phraseGroupList;
 
     public User() {
         super();
         this.enabled = false;
     }
+
 
 
 }

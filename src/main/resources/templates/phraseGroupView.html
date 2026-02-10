@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GroupPhrasesView</title>
+    <title>PhraseGroupView</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <style>
@@ -70,7 +70,7 @@
 <body>
 <div th:replace="logout-form-fragment :: logout-form"></div>
 <!--/*@thymesVar id="base64Image" type="java.lang.String"*/-->
-<form action="#" th:action="@{/groupPhrasesView}" th:object="${groupView}" th:method="delete">
+<form action="#" th:action="@{/phraseGroupView}" th:object="${groupView}" th:method="delete">
     <div id="confirmationModal" class="confirmationModal" style="transform: translate(-50%,300%)">
         <p>Are you sure you want to delete?</p>
         <button type="submit" id="confirmDelete" name="confirmDelete" th:value="${groupView.id}">Yes</button>
@@ -101,7 +101,7 @@
 
 </form>
 
-<form id="formAdd" th:method="put" action="#" th:action="@{'/groupPhrasesView/' + ${groupView.id}}"
+<form id="formAdd" th:method="put" action="#" th:action="@{'/phraseGroupView/' + ${groupView.id}}"
       th:object="${groupView}"
       enctype="multipart/form-data">
     <div id="modal">
@@ -127,7 +127,7 @@
         </div>
     </div>
 </form>
-<a style="text-decoration: none;" href="/groupPhrases">
+<a style="text-decoration: none;" href="/phraseGroup">
     <button class="back-button">
         <span>&larr;</span> Back
     </button>

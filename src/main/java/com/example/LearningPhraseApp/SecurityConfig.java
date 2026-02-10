@@ -42,7 +42,7 @@ public class SecurityConfig {
 
                         .loginPage("/login")
                         .usernameParameter("username")
-                        .defaultSuccessUrl("/groupPhrases", true)
+                        .defaultSuccessUrl("/phraseGroup", true)
                         .failureHandler((request, response, exception) -> {
                             request.getSession().setAttribute("errorMessage", "Incorrect username or password");
                             response.sendRedirect("/login?error=true");

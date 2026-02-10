@@ -1,4 +1,4 @@
-package com.example.LearningPhraseApp.group_phrases;
+package com.example.LearningPhraseApp.group;
 
 import com.example.LearningPhraseApp.pharses.Phrases;
 import com.example.LearningPhraseApp.users.User;
@@ -14,11 +14,11 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "group_phrases")
+@Table(name = "phrase_group")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupPhrases {
+public class PhraseGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

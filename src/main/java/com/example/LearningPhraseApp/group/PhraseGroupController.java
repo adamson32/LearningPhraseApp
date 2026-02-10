@@ -1,8 +1,8 @@
-package com.example.LearningPhraseApp.group_phrases;
+package com.example.LearningPhraseApp.group;
 
 import com.example.LearningPhraseApp.cloudinary.CloudinaryService;
-import com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesNameDto;
-import com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesWriteDto;
+import com.example.LearningPhraseApp.group.dto.PhraseGroupNameDto;
+import com.example.LearningPhraseApp.group.dto.PhraseGroupWriteDto;
 import com.example.LearningPhraseApp.image.ImageProcessingService;
 import com.example.LearningPhraseApp.image.ImageValidationService;
 import com.example.LearningPhraseApp.users.User;
@@ -22,26 +22,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesDtoMapper.mapGroupPhrasesToGroupPhrasesNameDto;
-import static com.example.LearningPhraseApp.group_phrases.dto.GroupPhrasesDtoMapper.mapGroupPhrasesToGroupPhrasesWriteDto;
+import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.mapGroupPhrasesToGroupPhrasesNameDto;
+import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.mapGroupPhrasesToGroupPhrasesWriteDto;
 
 @Controller
-@RequestMapping("/groupPhrases")
-public class GroupPhrasesController {
+@RequestMapping("/phraseGroup")
+public class PhraseGroupController {
 
-    private final GroupPhrasesRepository groupPhrasesRepository;
+    private final PhraseGroupRepository phraseGroupRepository;
     private final UserRepository userRepository;
     private final CloudinaryService cloudinaryService;
     private final ImageProcessingService imageProcessingService;
     private final ImageValidationService imageValidationService;
-    Logger logger = LoggerFactory.getLogger(GroupPhrasesController.class);
+    Logger logger = LoggerFactory.getLogger(PhraseGroupController.class);
 
 
-    public GroupPhrasesController(GroupPhrasesRepository groupPhrasesRepository,
-                                  UserRepository userRepository, CloudinaryService cloudinaryService,
-                                  ImageProcessingService imageProcessingService,
-                                  ImageValidationService imageValidationService) {
-        this.groupPhrasesRepository = groupPhrasesRepository;
+    public PhraseGroupController(PhraseGroupRepository phraseGroupRepository,
+                                 UserRepository userRepository, CloudinaryService cloudinaryService,
+                                 ImageProcessingService imageProcessingService,
+                                 ImageValidationService imageValidationService) {
+        this.phraseGroupRepository = phraseGroupRepository;
         this.userRepository = userRepository;
         this.cloudinaryService = cloudinaryService;
         this.imageProcessingService = imageProcessingService;
@@ -50,15 +50,15 @@ public class GroupPhrasesController {
 
     @GetMapping()
     String showTemplate(Model model) {
-        model.addAttribute("groupPhrases", new GroupPhrasesWriteDto());
-        return "groupPhrases";
+        model.addAttribute("phraseGroup", new PhraseGroupWriteDto());
+        return "phraseGroup";
     }
 
-    @ModelAttribute("groupPhrasesName")
-    List<GroupPhrasesNameDto> getGroups(Authentication authentication) {
+    @ModelAttribute("phraseGroupName")
+    List<PhraseGroupNameDto> getGroups(Authentication authentication) {
         Optional<User> user = userRepository.findByEmail(authentication.getName());
         if (user.isPresent()) {
-            return mapGroupPhrasesToGroupPhrasesNameDto(groupPhrasesRepository.findByUser(user.get()));
+            return mapGroupPhrasesToGroupPhrasesNameDto(phraseGroupRepository.findByUser(user.get()));
         } else {
             logger.error("User not found");
             return Collections.emptyList();
@@ -67,8 +67,8 @@ public class GroupPhrasesController {
 
 
     @PostMapping
-    public String addDataToDatabase(
-            @ModelAttribute("groupPhrases") @Valid GroupPhrasesWriteDto current,
+    public String create(
+            @ModelAttribute("phraseGroup") @Valid PhraseGroupWriteDto current,
             BindingResult bindingResult,
             @RequestParam("file") MultipartFile file,
             Authentication authentication) {
@@ -92,23 +92,23 @@ public class GroupPhrasesController {
             byte[] adjustedImage = imageProcessingService.adjustImage(file, 700, 500,"png");
             String imageUrl = cloudinaryService.uploadImage(adjustedImage);
             current.setImageUrl(imageUrl);
-            groupPhrasesRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null, user.get(), current));
+            phraseGroupRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null, user.get(), current));
         } else {
-            groupPhrasesRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null, user.get(), current));
+            phraseGroupRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null, user.get(), current));
         }
-        return "redirect:/groupPhrases";
+        return "redirect:/phraseGroup";
     }
 
 
     @DeleteMapping(params = "confirmDelete")
-    String deleteGroup(@RequestParam("confirmDelete") int groupId) {
-        Optional<GroupPhrases> groupPhrasesOptional = groupPhrasesRepository.findById(groupId);
+    String delete(@RequestParam("confirmDelete") int groupId) {
+        Optional<PhraseGroup> groupPhrasesOptional = phraseGroupRepository.findById(groupId);
         if (groupPhrasesOptional.get().getImageUrl() != null) {
             String previousImageUrl = groupPhrasesOptional.get().getImageUrl();
             cloudinaryService.deleteImage(previousImageUrl);
         }
-        groupPhrasesRepository.deleteById(groupId);
-        return "redirect:/groupPhrases";
+        phraseGroupRepository.deleteById(groupId);
+        return "redirect:/phraseGroup";
     }
 
 

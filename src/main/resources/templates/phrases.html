@@ -239,7 +239,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const currentGroup = urlParams.get('group');
 
-        const dynamicLink = `http://localhost:8080/groupPhrasesView?group=${currentGroup}`;
+        const dynamicLink = `http://localhost:8080/phraseGroupView?group=${currentGroup}`;
         var aBackBtn = document.getElementById('aBackBtn');
         aBackBtn.href = dynamicLink;
         //document.getElementById('aBackBtn').href(dynamicLink);

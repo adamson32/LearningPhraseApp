@@ -62,7 +62,7 @@
 <h1 style="text-align: center; font-family: Arial, sans-serif;">LearningPhraseApp</h1>
 <div th:replace="logout-form-fragment :: logout-form"></div>
 <div class="overlay" id="overlay"></div>
-<form id="listForm" action="#" th:action="@{/groupPhrases}" th:method="delete">
+<form id="listForm" action="#" th:action="@{/phraseGroup}" th:method="delete">
 
     <div id="confirmationModal" class="confirmationModal">
         <p style="color:black;">Are you sure you want to delete?</p>
@@ -72,9 +72,9 @@
 
     <div class="container">
 
-        <dl th:each="group,groupStat: ${groupPhrasesName}">
+        <dl th:each="group,groupStat: ${phraseGroupName}">
             <dt>
-                <a style="text-decoration:none;" th:href="@{/groupPhrasesView(group=${group.id})}">
+                <a style="text-decoration:none;" th:href="@{/phraseGroupView(group=${group.id})}">
                     <button id="groupNameButton" th:text="${group.name}" type="button" style="width:300px;"></button>
 
                 </a>
@@ -92,7 +92,7 @@
 
 <button id="openModal" class="add-button">Create</button>
 
-<form id="formAdd" method="post" action="#" th:action="@{/groupPhrases}" th:object="${groupPhrases}"
+<form id="formAdd" method="post" action="#" th:action="@{/phraseGroup}" th:object="${phraseGroup}"
       enctype="multipart/form-data">
     <div id="modal">
         <div id="modal-content">

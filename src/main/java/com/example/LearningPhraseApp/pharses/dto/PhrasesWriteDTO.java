@@ -1,6 +1,6 @@
 package com.example.LearningPhraseApp.pharses.dto;
 
-import com.example.LearningPhraseApp.group_phrases.GroupPhrases;
+import com.example.LearningPhraseApp.group.PhraseGroup;
 import com.example.LearningPhraseApp.pharses.Phrases;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -15,12 +15,12 @@ public class PhrasesWriteDTO {
     private String description;
     @NotEmpty(message = "meaning must be not empty")
     private String meaning;
-    private GroupPhrases group;
+    private PhraseGroup group;
 
     public PhrasesWriteDTO() {
     }
 
-    public Phrases toPhrases(GroupPhrases group) {
+    public Phrases toPhrases(PhraseGroup group) {
 
         var result = new Phrases();
         result.setPhrase(phrase);

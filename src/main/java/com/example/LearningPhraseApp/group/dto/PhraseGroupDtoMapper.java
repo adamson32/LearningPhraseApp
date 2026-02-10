@@ -1,33 +1,33 @@
-package com.example.LearningPhraseApp.group_phrases.dto;
+package com.example.LearningPhraseApp.group.dto;
 
-import com.example.LearningPhraseApp.group_phrases.GroupPhrases;
+import com.example.LearningPhraseApp.group.PhraseGroup;
 import com.example.LearningPhraseApp.users.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GroupPhrasesDtoMapper {
+public class PhraseGroupDtoMapper {
 
-    private GroupPhrasesDtoMapper() {
+    private PhraseGroupDtoMapper() {
     }
 
-    public static List<GroupPhrasesNameDto> mapGroupPhrasesToGroupPhrasesNameDto(List<GroupPhrases> group) {
+    public static List<PhraseGroupNameDto> mapGroupPhrasesToGroupPhrasesNameDto(List<PhraseGroup> group) {
 
         return group.stream()
-                .map(groupPhrases -> new GroupPhrasesNameDto(groupPhrases.getId(), groupPhrases.getName()))
+                .map(groupPhrases -> new PhraseGroupNameDto(groupPhrases.getId(), groupPhrases.getName()))
                 .collect(Collectors.toList());
     }
 
-    public static GroupPhrases mapGroupPhrasesToGroupPhrasesWriteDto(Integer id, User user, GroupPhrasesWriteDto group) {
+    public static PhraseGroup mapGroupPhrasesToGroupPhrasesWriteDto(Integer id, User user, PhraseGroupWriteDto group) {
         if (id == null) {
-            return GroupPhrases.builder()
+            return PhraseGroup.builder()
                     .name(group.getName())
                     .description(group.getDescription())
                     .imageUrl(group.getImageUrl())
                     .user(user)
                     .build();
         } else {
-            return GroupPhrases.builder()
+            return PhraseGroup.builder()
                     .id(id)
                     .name(group.getName())
                     .description(group.getDescription())
@@ -38,8 +38,8 @@ public class GroupPhrasesDtoMapper {
 
     }
 
-    public static GroupPhrasesReadDto mapGroupPhrasesWriteDtoToGroupPhrases(int id, GroupPhrases group) {
-        return GroupPhrasesReadDto.builder()
+    public static PhraseGroupReadDto mapGroupPhrasesWriteDtoToGroupPhrases(int id, PhraseGroup group) {
+        return PhraseGroupReadDto.builder()
                 .id(id)
                 .name(group.getName())
                 .description(group.getDescription())

@@ -1,5 +1,5 @@
-drop table if exists group_phrases;
-create table group_phrases
+drop table if exists phrase_group;
+create table phrase_group
 (
     id             int          not null primary key identity(1,1),
     name           varchar(100) not null,

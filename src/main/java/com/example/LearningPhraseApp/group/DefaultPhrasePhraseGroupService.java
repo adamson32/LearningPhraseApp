@@ -1,6 +1,6 @@
-package com.example.LearningPhraseApp.group_phrases;
+package com.example.LearningPhraseApp.group;
 
-import com.example.LearningPhraseApp.group_phrases.dto.GroupReadModel;
+import com.example.LearningPhraseApp.group.dto.GroupReadModel;
 import com.example.LearningPhraseApp.pharses.dto.PhrasesReadDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -9,16 +9,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GroupPhrasesServiceImpl implements GroupPhrasesService {
-    private final GroupPhrasesRepository groupPhrasesRepository;
+public class DefaultPhrasePhraseGroupService implements PhraseGroupService {
+    private final PhraseGroupRepository phraseGroupRepository;
 
-    GroupPhrasesServiceImpl(GroupPhrasesRepository groupPhrasesRepository) {
-        this.groupPhrasesRepository = groupPhrasesRepository;
+    DefaultPhrasePhraseGroupService(PhraseGroupRepository phraseGroupRepository) {
+        this.phraseGroupRepository = phraseGroupRepository;
     }
 
     @Override
     public List<PhrasesReadDTO> readAllPhrasesFromGroupById(int id) {
-        Optional<GroupPhrases> groupPhrasesOptional = groupPhrasesRepository.findById(id);
+        Optional<PhraseGroup> groupPhrasesOptional = phraseGroupRepository.findById(id);
 
         if (groupPhrasesOptional.isPresent()) {
             return groupPhrasesOptional

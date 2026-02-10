@@ -1,7 +1,7 @@
 package com.example.LearningPhraseApp.pharses;
 
-import com.example.LearningPhraseApp.group_phrases.GroupPhrases;
-import com.example.LearningPhraseApp.group_phrases.GroupPhrasesRepository;
+import com.example.LearningPhraseApp.group.PhraseGroup;
+import com.example.LearningPhraseApp.group.PhraseGroupRepository;
 import com.example.LearningPhraseApp.pharses.dto.PhrasesReadDTO;
 import com.example.LearningPhraseApp.pharses.dto.PhrasesWriteDTO;
 import org.slf4j.Logger;
@@ -19,20 +19,20 @@ import static com.example.LearningPhraseApp.pharses.dto.PhrasesDtoMapper.mapPhra
 @Service
 class PhrasesServiceImpl implements PhrasesService {
     private final PhrasesRepository repository;
-    private final GroupPhrasesRepository groupPhrasesRepository;
+    private final PhraseGroupRepository phraseGroupRepository;
     private static final Logger logger = LoggerFactory.getLogger(PhrasesServiceImpl.class);
 
-    PhrasesServiceImpl(PhrasesRepository repository, GroupPhrasesRepository groupPhrasesRepository) {
+    PhrasesServiceImpl(PhrasesRepository repository, PhraseGroupRepository phraseGroupRepository) {
         this.repository = repository;
-        this.groupPhrasesRepository = groupPhrasesRepository;
+        this.phraseGroupRepository = phraseGroupRepository;
     }
 
     @Override
     public void createPhrase(final PhrasesWriteDTO source, int groupId) {
 
-        Optional<GroupPhrases> groupOptional = groupPhrasesRepository.findById(groupId);
+        Optional<PhraseGroup> groupOptional = phraseGroupRepository.findById(groupId);
         if (groupOptional.isPresent()) {
-            GroupPhrases group = groupOptional.get();
+            PhraseGroup group = groupOptional.get();
             repository.save(source.toPhrases(group));
         } else {
             logger.warn("Group {} not found", groupId);

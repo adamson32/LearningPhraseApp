@@ -1,6 +1,6 @@
 package com.example.LearningPhraseApp.pharses.dto;
 
-import com.example.LearningPhraseApp.group_phrases.GroupPhrases;
+import com.example.LearningPhraseApp.group.PhraseGroup;
 import com.example.LearningPhraseApp.pharses.Phrases;
 import lombok.*;
 
@@ -19,7 +19,7 @@ public class PhrasesReadDTO {
     private String meaning;
     private LocalDateTime nextDate;
     private int progress;
-    private GroupPhrases group;
+    private PhraseGroup group;
 
 
     public PhrasesReadDTO(Phrases source) {
