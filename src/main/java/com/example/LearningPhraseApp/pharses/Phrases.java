@@ -33,6 +33,7 @@ public class Phrases {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phrase_group_id")
+    @Setter(AccessLevel.NONE)
     private PhraseGroup group;
 
     public Phrases(String phrase, String description,
@@ -50,6 +51,10 @@ public class Phrases {
         phrase = source.phrase;
         description = source.description;
         meaning = source.meaning;
+    }
+
+    public void assignToGroup(PhraseGroup group) {
+        this.group = group;
     }
 
     @PrePersist

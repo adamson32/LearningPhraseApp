@@ -40,9 +40,7 @@ public class DefaultUserService implements UserService {
 
         Role role = roleRepository.findByName(RoleEnum.USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.assignToRole(roles);
+        user.addRole(role);
         return userRepository.save(user);
     }
 

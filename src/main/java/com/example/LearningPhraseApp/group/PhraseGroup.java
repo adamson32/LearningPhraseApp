@@ -28,12 +28,10 @@ public class PhraseGroup {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
     @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     private List<Phrases> phrases;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @Setter(AccessLevel.NONE)
     private User user;
 
     public List<Phrases> getPhrases() {

@@ -26,7 +26,7 @@ public class PhrasesWriteDTO {
         result.setPhrase(phrase);
         result.setDescription(description);
         result.setMeaning(meaning);
-        if (group != null) result.setGroup(group);
+        if (group != null) result.assignToGroup(group);
         return result;
     }
 }
