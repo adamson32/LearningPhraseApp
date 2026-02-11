@@ -6,8 +6,8 @@ Web application for language learning. Focuses on regular repetition of words, p
 - [Features](#features)
 - [Technologies](#technologies)
 - [Running the Application](#running-the-application)
-- [License](#license)
 - [screenshots](#screenshots)
+- [License](#license)
 
 ## Features
 - User registration and login
