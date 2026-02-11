@@ -22,8 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.mapGroupPhrasesToGroupPhrasesWriteDto;
-import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.mapGroupPhrasesWriteDtoToGroupPhrases;
+import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.*;
 
 @Controller
 @RequestMapping("/phraseGroupView")
@@ -54,10 +53,10 @@ class PhraseGroupViewController {
     @GetMapping
     public String showGroupView(@RequestParam("group") int groupID, Model model,
                                 Authentication authentication) {
-        if (phraseGroupMembershipService.isCurrentGroupPhrasesBelongsToUser(authentication, groupID)) {
-            Optional<PhraseGroup> groupPhrasesOptional = phraseGroupRepository.findById(groupID);
-            PhraseGroupReadDto group = mapGroupPhrasesWriteDtoToGroupPhrases(groupID,
-                    groupPhrasesOptional.get());
+        if (phraseGroupMembershipService.isCurrentPhraseGroupBelongsToUser(authentication, groupID)) {
+            Optional<PhraseGroup> phrasesGroupOptional = phraseGroupRepository.findById(groupID);
+            PhraseGroupReadDto group = mapPhraseGroupWriteDtoToPhraseGroup(groupID,
+                    phrasesGroupOptional.get());
             model.addAttribute("groupView", group);
             return "phraseGroupView";
         }
@@ -70,13 +69,13 @@ class PhraseGroupViewController {
     ) {
         deleteImageUrl(groupId);
         phraseGroupRepository.deleteById(groupId);
-        return "redirect:/groupPhrases";
+        return "redirect:/phraseGroup";
     }
 
     private void deleteImageUrl(int groupId) {
-        Optional<PhraseGroup> groupPhrasesOptional = phraseGroupRepository.findById(groupId);
-        if (groupPhrasesOptional.get().getImageUrl() != null) {
-            String previousImageUrl = groupPhrasesOptional.get().getImageUrl();
+        Optional<PhraseGroup> phraseGroupOptional = phraseGroupRepository.findById(groupId);
+        if (phraseGroupOptional.get().getImageUrl() != null) {
+            String previousImageUrl = phraseGroupOptional.get().getImageUrl();
             cloudinaryService.deleteImage(previousImageUrl);
         }
     }
@@ -107,10 +106,10 @@ class PhraseGroupViewController {
             byte[] resizeImage = imageProcessingService.adjustImage(file, 700, 500,"png");
             String imageUrl = cloudinaryService.uploadImage(resizeImage);
             toUpdate.setImageUrl(imageUrl);
-            phraseGroupRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(groupId, user.get(), toUpdate));
+            phraseGroupRepository.save(mapPhraseGroupsToPhraseGroupWriteDto(groupId, user.get(), toUpdate));
 
         } else {
-            phraseGroupRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(groupId, user.get(), toUpdate));
+            phraseGroupRepository.save(mapPhraseGroupsToPhraseGroupWriteDto(groupId, user.get(), toUpdate));
         }
         return "redirect:/phraseGroupView?group=" + groupId;
     }

@@ -20,7 +20,7 @@ class UserOwnershipVerificationServicePhrase implements PhraseGroupMembershipSer
     }
 
     @Override
-    public boolean isCurrentGroupPhrasesBelongsToUser(Authentication authentication, int groupID) {
+    public boolean isCurrentPhraseGroupBelongsToUser(Authentication authentication, int groupID) {
         Optional<User> user = userRepository.findByEmail(authentication.getName());
         Optional<PhraseGroup> group = phraseGroupRepository.findById(groupID);
 

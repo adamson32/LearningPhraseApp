@@ -76,7 +76,7 @@ class PhraseGroupControllerTest {
 
         String result = phraseGroupController.create(current, mock(BindingResult.class), file, authentication);
 
-        assertEquals("redirect:/groupPhrases", result);
+        assertEquals("redirect:/phraseGroup", result);
         verify(phraseGroupRepository, times(1)).save(any(PhraseGroup.class));
     }
     }

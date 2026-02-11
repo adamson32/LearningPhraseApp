@@ -22,8 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.mapGroupPhrasesToGroupPhrasesNameDto;
-import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.mapGroupPhrasesToGroupPhrasesWriteDto;
+import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.mapPhraseGroupToPhraseGroupNameDto;
+import static com.example.LearningPhraseApp.group.dto.PhraseGroupDtoMapper.mapPhraseGroupsToPhraseGroupWriteDto;
 
 @Controller
 @RequestMapping("/phraseGroup")
@@ -58,7 +58,7 @@ public class PhraseGroupController {
     List<PhraseGroupNameDto> getGroups(Authentication authentication) {
         Optional<User> user = userRepository.findByEmail(authentication.getName());
         if (user.isPresent()) {
-            return mapGroupPhrasesToGroupPhrasesNameDto(phraseGroupRepository.findByUser(user.get()));
+            return mapPhraseGroupToPhraseGroupNameDto(phraseGroupRepository.findByUser(user.get()));
         } else {
             logger.error("User not found");
             return Collections.emptyList();
@@ -92,9 +92,9 @@ public class PhraseGroupController {
             byte[] adjustedImage = imageProcessingService.adjustImage(file, 700, 500,"png");
             String imageUrl = cloudinaryService.uploadImage(adjustedImage);
             current.setImageUrl(imageUrl);
-            phraseGroupRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null, user.get(), current));
+            phraseGroupRepository.save(mapPhraseGroupsToPhraseGroupWriteDto(null, user.get(), current));
         } else {
-            phraseGroupRepository.save(mapGroupPhrasesToGroupPhrasesWriteDto(null, user.get(), current));
+            phraseGroupRepository.save( mapPhraseGroupsToPhraseGroupWriteDto(null, user.get(), current));
         }
         return "redirect:/phraseGroup";
     }
@@ -102,9 +102,9 @@ public class PhraseGroupController {
 
     @DeleteMapping(params = "confirmDelete")
     String delete(@RequestParam("confirmDelete") int groupId) {
-        Optional<PhraseGroup> groupPhrasesOptional = phraseGroupRepository.findById(groupId);
-        if (groupPhrasesOptional.get().getImageUrl() != null) {
-            String previousImageUrl = groupPhrasesOptional.get().getImageUrl();
+        Optional<PhraseGroup> phraseGroupOptional = phraseGroupRepository.findById(groupId);
+        if (phraseGroupOptional.get().getImageUrl() != null) {
+            String previousImageUrl = phraseGroupOptional.get().getImageUrl();
             cloudinaryService.deleteImage(previousImageUrl);
         }
         phraseGroupRepository.deleteById(groupId);

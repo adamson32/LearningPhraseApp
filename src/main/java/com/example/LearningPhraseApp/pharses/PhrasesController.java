@@ -37,7 +37,7 @@ public class PhrasesController {
     @GetMapping
     String showTemplate(@RequestParam("group") int groupID,
                         Model model, Authentication authentication) {
-        if (phraseGroupMembershipService.isCurrentGroupPhrasesBelongsToUser(authentication, groupID)) {
+        if (phraseGroupMembershipService.isCurrentPhraseGroupBelongsToUser(authentication, groupID)) {
             storedGroupId = groupID;
             model.addAttribute("phrases", getPhrases(groupID));
             model.addAttribute("phrase", new PhrasesWriteDTO());

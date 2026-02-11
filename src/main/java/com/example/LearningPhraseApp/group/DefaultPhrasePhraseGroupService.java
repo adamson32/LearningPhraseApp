@@ -18,10 +18,10 @@ public class DefaultPhrasePhraseGroupService implements PhraseGroupService {
 
     @Override
     public List<PhrasesReadDTO> readAllPhrasesFromGroupById(int id) {
-        Optional<PhraseGroup> groupPhrasesOptional = phraseGroupRepository.findById(id);
+        Optional<PhraseGroup> phraseGroupOptional = phraseGroupRepository.findById(id);
 
-        if (groupPhrasesOptional.isPresent()) {
-            return groupPhrasesOptional
+        if (phraseGroupOptional.isPresent()) {
+            return phraseGroupOptional
                     .map(GroupReadModel::new)
                     .map(GroupReadModel::getPhrases)
                     .orElseThrow(() -> new EntityNotFoundException("No phrases found for group with id " + id));

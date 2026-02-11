@@ -38,7 +38,7 @@ public class StartPhrasesController {
 
     @GetMapping(params = "group")
     String showTemplate(@RequestParam("group") int groupId, Model model, Authentication authentication) {
-        if (phraseGroupMembershipService.isCurrentGroupPhrasesBelongsToUser(authentication, groupId)) {
+        if (phraseGroupMembershipService.isCurrentPhraseGroupBelongsToUser(authentication, groupId)) {
             PhraseGroup gr = phraseGroupRepository.findById(groupId).get();
             storedGroupId = groupId;
             localDateTime = LocalDateTime.now();

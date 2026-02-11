@@ -11,14 +11,14 @@ public class PhraseGroupDtoMapper {
     private PhraseGroupDtoMapper() {
     }
 
-    public static List<PhraseGroupNameDto> mapGroupPhrasesToGroupPhrasesNameDto(List<PhraseGroup> group) {
+    public static List<PhraseGroupNameDto> mapPhraseGroupToPhraseGroupNameDto(List<PhraseGroup> group) {
 
         return group.stream()
-                .map(groupPhrases -> new PhraseGroupNameDto(groupPhrases.getId(), groupPhrases.getName()))
+                .map(phraseGroup -> new PhraseGroupNameDto(phraseGroup.getId(), phraseGroup.getName()))
                 .collect(Collectors.toList());
     }
 
-    public static PhraseGroup mapGroupPhrasesToGroupPhrasesWriteDto(Integer id, User user, PhraseGroupWriteDto group) {
+    public static PhraseGroup mapPhraseGroupsToPhraseGroupWriteDto(Integer id, User user, PhraseGroupWriteDto group) {
         if (id == null) {
             return PhraseGroup.builder()
                     .name(group.getName())
@@ -38,7 +38,7 @@ public class PhraseGroupDtoMapper {
 
     }
 
-    public static PhraseGroupReadDto mapGroupPhrasesWriteDtoToGroupPhrases(int id, PhraseGroup group) {
+    public static PhraseGroupReadDto mapPhraseGroupWriteDtoToPhraseGroup(int id, PhraseGroup group) {
         return PhraseGroupReadDto.builder()
                 .id(id)
                 .name(group.getName())

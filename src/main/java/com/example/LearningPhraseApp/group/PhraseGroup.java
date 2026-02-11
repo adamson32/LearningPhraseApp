@@ -3,12 +3,10 @@ package com.example.LearningPhraseApp.group;
 import com.example.LearningPhraseApp.pharses.Phrases;
 import com.example.LearningPhraseApp.users.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -29,10 +27,16 @@ public class PhraseGroup {
     private LocalDateTime nextDate;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private List<Phrases> phrases;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @Setter(AccessLevel.NONE)
     private User user;
 
+    public List<Phrases> getPhrases() {
+        return Collections.unmodifiableList(phrases);
+    }
 }
