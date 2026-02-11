@@ -5,11 +5,11 @@ import com.example.LearningPhraseApp.verificationToken.VerificationTokenReposito
 import org.springframework.stereotype.Service;
 
 @Service
-public class VerificationTokenServiceImpl implements VerificationTokenService {
+public class DefaultVerificationTokenService implements VerificationTokenService {
 
     private final VerificationTokenRepository verificationTokenRepository;
 
-    public VerificationTokenServiceImpl(VerificationTokenRepository verificationTokenRepository) {
+    public DefaultVerificationTokenService(VerificationTokenRepository verificationTokenRepository) {
         this.verificationTokenRepository = verificationTokenRepository;
     }
 

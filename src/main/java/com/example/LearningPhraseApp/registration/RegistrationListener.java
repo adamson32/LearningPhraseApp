@@ -1,11 +1,8 @@
 package com.example.LearningPhraseApp.registration;
 
 import com.example.LearningPhraseApp.users.User;
-import com.example.LearningPhraseApp.users.UserRepository;
-import com.example.LearningPhraseApp.users.UserServiceImpl;
 import com.example.LearningPhraseApp.users.VerificationTokenService;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;

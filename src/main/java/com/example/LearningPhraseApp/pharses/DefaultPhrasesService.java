@@ -17,12 +17,12 @@ import static com.example.LearningPhraseApp.pharses.dto.PhrasesDtoMapper.mapPhra
 
 
 @Service
-class PhrasesServiceImpl implements PhrasesService {
+class DefaultPhrasesService implements PhrasesService {
     private final PhrasesRepository repository;
     private final PhraseGroupRepository phraseGroupRepository;
-    private static final Logger logger = LoggerFactory.getLogger(PhrasesServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultPhrasesService.class);
 
-    PhrasesServiceImpl(PhrasesRepository repository, PhraseGroupRepository phraseGroupRepository) {
+    DefaultPhrasesService(PhrasesRepository repository, PhraseGroupRepository phraseGroupRepository) {
         this.repository = repository;
         this.phraseGroupRepository = phraseGroupRepository;
     }

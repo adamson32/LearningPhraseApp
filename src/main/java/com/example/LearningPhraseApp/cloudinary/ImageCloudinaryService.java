@@ -10,13 +10,13 @@ import java.io.IOException;
 import java.util.Map;
 
 @Service
-public class CloudinaryServiceImpl implements CloudinaryService {
+public class ImageCloudinaryService implements CloudinaryService {
 
     private final Cloudinary cloudinary;
     private static final String folderName = "learningPhrases";
-    private static final Logger logger = LoggerFactory.getLogger(CloudinaryServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImageCloudinaryService.class);
 
-    public CloudinaryServiceImpl(Cloudinary cloudinary) {
+    public ImageCloudinaryService(Cloudinary cloudinary) {
         this.cloudinary = cloudinary;
     }
 
