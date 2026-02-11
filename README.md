@@ -58,4 +58,4 @@ Web application for language learning. Focuses on regular repetition of words, p
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the MIT License.
